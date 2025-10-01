@@ -17,8 +17,8 @@ export function EditPost() {
     data.set("summary", summary);
     data.set("content", content);
     data.set("id", id);
-    if (files?.[0]) {
-      data.set("file", files?.[0]);
+    if (files.length) {
+      data.set("file", files);
     }
     const response = await fetch("http://localhost:4000/post", {
       method: "PUT",
@@ -28,6 +28,24 @@ export function EditPost() {
     if (response.ok) {
       setRedirect(true);
     }
+  }
+  async function handlePhoto(ev) {
+    const file = ev.target.files[0];
+    if (!file) return;
+    const data = new FormData();
+
+    data.append("file", file);
+    data.append("upload_preset", `${import.meta.env.VITE_my_upload_preset}`);
+    data.append("cloud_name", `${import.meta.env.VITE_my_upload_preset}`);
+    const response = await fetch(
+      " https://api.cloudinary.com/v1_1/djhvdnjpz/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    const uploadedImageURL = await response.json();
+    setFile(uploadedImageURL["url"]);
   }
   useEffect(() => {
     fetch("http://localhost:4000/post/" + id).then(response => {
@@ -56,7 +74,7 @@ export function EditPost() {
         value={summary}
         onChange={ev => setSummary(ev.target.value)}
       />
-      <input type="file" onChange={ev => setFile(ev.target.files)} />
+      <input type="file" onChange={handlePhoto} />
       <Editor onChange={setContent} value={content} />
       <button style={{ marginTop: "5px" }}>Update Post</button>
     </form>
