@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Editor from "../Editor";
+import handlePhoto from "../Utils/handlePhoto.js"
 
 export function EditPost() {
   const { id } = useParams();
@@ -29,24 +30,7 @@ export function EditPost() {
       setRedirect(true);
     }
   }
-  async function handlePhoto(ev) {
-    const file = ev.target.files[0];
-    if (!file) return;
-    const data = new FormData();
-
-    data.append("file", file);
-    data.append("upload_preset", `${import.meta.env.VITE_my_upload_preset}`);
-    data.append("cloud_name", `${import.meta.env.VITE_my_upload_preset}`);
-    const response = await fetch(
-      " https://api.cloudinary.com/v1_1/djhvdnjpz/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const uploadedImageURL = await response.json();
-    setFile(uploadedImageURL["url"]);
-  }
+  
   useEffect(() => {
     fetch("http://localhost:4000/post/" + id).then(response => {
       response.json().then(postInfo => {
@@ -74,7 +58,7 @@ export function EditPost() {
         value={summary}
         onChange={ev => setSummary(ev.target.value)}
       />
-      <input type="file" onChange={handlePhoto} />
+      <input type="file" onChange={ev => handlePhoto(ev, setFile)} />
       <Editor onChange={setContent} value={content} />
       <button style={{ marginTop: "5px" }}>Update Post</button>
     </form>
