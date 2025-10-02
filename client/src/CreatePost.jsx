@@ -16,7 +16,6 @@ export default function CreatePost() {
     data.set("summary", summary);
     data.set("content", content);
     data.set("file", files);
-    console.log({ title, summary, content, files });
     const response = await fetch("https://deploy-umyx.onrender.com/post", {
       method: "POST",
       body: data,
