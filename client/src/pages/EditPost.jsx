@@ -21,7 +21,7 @@ export function EditPost() {
     if (files.length) {
       data.set("file", files);
     }
-    const response = await fetch("http://localhost:4000/post", {
+    const response = await fetch("https://deploy-umyx.onrender.com/post", {
       method: "PUT",
       body: data,
       credentials: "include",
@@ -32,7 +32,7 @@ export function EditPost() {
   }
   
   useEffect(() => {
-    fetch("http://localhost:4000/post/" + id).then(response => {
+    fetch("https://deploy-umyx.onrender.com/post/" + id).then(response => {
       response.json().then(postInfo => {
         setTitle(postInfo.title);
         setSummary(postInfo.summary);

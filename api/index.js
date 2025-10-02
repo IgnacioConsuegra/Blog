@@ -13,11 +13,14 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+      callback(null, true);
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
@@ -47,6 +50,7 @@ app.post("/register", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
   const { token } = req.cookies;
 
@@ -124,16 +128,20 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
+  console.log(req);
   const { token } = req.cookies;
-  jwt.verify(token, secret, {}, (err, info) => {
-    // if (err) throw err;
-    res.json(info);
-  });
+  try {
+    jwt.verify(token, secret, {}, (err, info) => {
+      // if (err) throw err;
+      res.json(info);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json("ok");
 });
-
 app.listen(process.env.PORT || 4000, () =>
   console.log(`🚀 Server running on port ${process.env.PORT || 4000}`)
 );

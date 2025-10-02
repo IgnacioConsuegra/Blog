@@ -1,4 +1,4 @@
-import { useContext, useState, useTransition } from "react";
+import { useContext} from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
@@ -6,6 +6,8 @@ import { UserContext } from "./UserContext";
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   useEffect(() => {
+    console.log("sdfsdfd")
+
     fetch("http://localhost:4000/profile", {
       credentials: "include",
     })
