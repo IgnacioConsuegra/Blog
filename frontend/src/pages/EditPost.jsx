@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Editor from "../Editor";
 import handlePhoto from "../Utils/handlePhoto.js";
+import toast from "react-hot-toast";
 
 export function EditPost() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ export function EditPost() {
   const [content, setContent] = useState("");
   const [files, setFile] = useState("");
   const [redirect, setRedirect] = useState(false);
-
+  const navigate = useNavigate();
   async function updatePost(ev) {
     ev.preventDefault();
     const data = new FormData();
@@ -30,7 +31,18 @@ export function EditPost() {
       setRedirect(true);
     }
   }
-
+  const handleDelete = async () => {
+    const response = await fetch("http://localhost:4000/deletePost/" + id, {
+      method: "POST",
+      credentials: "include",
+    })
+    if(response.ok){
+      toast.success("Post deleted correctly");
+      navigate("/")
+    }else{
+      toast.error("An error happen, try later.")
+    }
+  };
   useEffect(() => {
     fetch("http://localhost:4000/post/" + id).then(response => {
       response.json().then(postInfo => {
@@ -60,9 +72,19 @@ export function EditPost() {
         onChange={ev => setSummary(ev.target.value)}
         className="input"
       />
-      <input type="file" onChange={ev => handlePhoto(ev, setFile)} className="input hover:cursor-pointer" />
+      <input
+        type="file"
+        onChange={ev => handlePhoto(ev, setFile)}
+        className="input hover:cursor-pointer"
+      />
       <Editor onChange={setContent} value={content} />
       <button className="btn">Update post</button>
+      <button
+        className="btn btn-secondary mt-3 md:mt-4 lg:mt-5"
+        onClick={handleDelete}
+      >
+        Delete post
+      </button>
     </form>
   );
 }

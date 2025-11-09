@@ -96,6 +96,26 @@ app.put("/post", uploadMiddleware.single("file"), async (req, res) => {
     res.json(postDoc);
   });
 });
+app.post(
+  "/deletePost/:id",
+  uploadMiddleware.single("file"),
+  async (req, res) => {
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+      if (err) throw err;
+      const { id } = req.params;
+      const postDoc = await Post.findById(id);
+      if (!postDoc) res.status(400).json("There is not post");
+      const isAuthor =
+        JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+      if (!isAuthor) {
+        res.status(400).json("You are not the author");
+      }
+      await postDoc.deleteOne({ _id: id });
+      res.status(200).json("Post deleted");
+    });
+  }
+);
 app.get("/post", async (req, res) => {
   const posts = await Post.find()
     .populate("author", ["username"])

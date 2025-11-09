@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
-import {Navigate} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import { toast } from "react-hot-toast";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const {setUserInfo} = useContext(UserContext);
+  const { setUserInfo } = useContext(UserContext);
   async function login(ev) {
     ev.preventDefault();
     const response = await fetch("http://localhost:4000/login", {
@@ -16,15 +17,15 @@ export default function LoginPage() {
     });
     if (response.ok) {
       response.json().then(userInfo => {
-        setUserInfo(userInfo)
+        setUserInfo(userInfo);
         setRedirect(true);
+        toast.success("Logged correctly");
       });
     } else {
-      alert("Wrong username or password.");
+      toast.error("Wrong username or password.");
     }
-    
   }
-  if(redirect) {
+  if (redirect) {
     return <Navigate to={"/"} />;
   }
   return (

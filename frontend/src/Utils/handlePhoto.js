@@ -1,4 +1,5 @@
 export default async function handlePhoto(ev, handler) {
+  handler("uploading");
   const file = ev.target.files[0];
   if (!file) return;
   const data = new FormData();

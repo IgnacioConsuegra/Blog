@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
-
+import {toast} from "react-hot-toast"
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   useEffect(() => {
@@ -12,6 +12,7 @@ export default function Header() {
       credentials: "include",
     })
       .then(response => {
+        console.log(response)
         if (!response.ok) {
           setUserInfo(null);
           return;
@@ -34,6 +35,7 @@ export default function Header() {
       credentials: "include",
       method: "POST",
     });
+    toast.success("Logged out")
     setUserInfo(null);
   }
 

@@ -9,6 +9,7 @@ export default function Post({
   content,
   createdAt,
   author,
+  username
 }) {
   return (
     <div className="post">

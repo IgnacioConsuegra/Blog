@@ -3,6 +3,7 @@ import "react-quill/dist/quill.snow.css";
 import { Navigate } from "react-router-dom";
 import Editor from "./Editor.jsx";
 import handlePhoto from "./Utils/handlePhoto.js";
+import {toast} from "react-hot-toast"
 export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
@@ -10,7 +11,12 @@ export default function CreatePost() {
   const [files, setFile] = useState("");
   const [redirect, setRedirect] = useState(false);
   async function createNewPost(ev) {
-    ev.preventDefault();
+        ev.preventDefault();
+
+    if(files === "uploading"){
+      toast.error("Photo is uploading");
+      return
+    }
     const data = new FormData();
     data.set("title", title);
     data.set("summary", summary);

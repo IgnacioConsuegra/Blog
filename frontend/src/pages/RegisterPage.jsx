@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import {toast} from "react-hot-toast"
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -14,10 +14,10 @@ export default function RegisterPage() {
       headers: { "Content-Type": "application/json" },
     });
     if (response.status === 201) {
-      alert("Registration successful");
+      toast.success("Registration successful");
       navigate("/login");
     } else {
-      alert("Registration failed");
+      toast.error("Registration failed");
     }
   }
   return (
