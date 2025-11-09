@@ -1,13 +1,15 @@
-const bcrypt = require("bcryptjs");
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const User = require("./models/User");
-const Post = require("./models/Post");
-const cookieParser = require("cookie-parser");
-const multer = require("multer");
-const jwt = require("jsonwebtoken");
-const fs = require("fs");
+import path from "path";
+import bcrypt from "bcryptjs";
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import User from "../models/User.js";
+import Post from "../models/Post.js";
+import cookieParser from "cookie-parser";
+import multer from "multer";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
 
 const app = express();
 app.use(
@@ -23,10 +25,13 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+const PORT = process.env.PORT;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config();
+
 app.use("/uploads", express.static(__dirname + "/uploads"));
 const uploadMiddleware = multer({ dest: "uploads/" });
-
-require("dotenv").config();
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -34,7 +39,7 @@ mongoose
   .catch(err => console.error("Error connecting to MongoDB:", err));
 
 const salt = bcrypt.genSaltSync(10);
-const secret = "asdfdsfasdfsadads";
+const secret = process.env.SALT;
 
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
@@ -142,6 +147,17 @@ app.get("/profile", (req, res) => {
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json("ok");
 });
+
+try {
+  const buildPath = path.join(__dirname, "../../frontend/dist");
+
+  app.use(express.static(buildPath));
+  app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
+  });
+} catch (err) {
+  console.log("Error: ", err);
+}
 app.listen(process.env.PORT || 4000, () =>
   console.log(`🚀 Server running on port ${process.env.PORT || 4000}`)
 );
