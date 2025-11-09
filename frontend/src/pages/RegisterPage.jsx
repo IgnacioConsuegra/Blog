@@ -1,18 +1,22 @@
 import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
   async function register(ev) {
     ev.preventDefault();
-    const response = await fetch("https://deploy-umyx.onrender.com/register", {
+    const response = await fetch("http://localhost:4000/register", {
       method: "POST",
       body: JSON.stringify({ username, password }),
       headers: { "Content-Type": "application/json" },
     });
-    if(response.status === 201){
+    if (response.status === 201) {
       alert("Registration successful");
-    }else{
+      navigate("/login");
+    } else {
       alert("Registration failed");
     }
   }

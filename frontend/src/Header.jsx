@@ -6,7 +6,7 @@ import { UserContext } from "./UserContext";
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   useEffect(() => {
-    fetch("https://deploy-umyx.onrender.com/profile", {
+    fetch("http://localhost:4000/profile", {
       method: "GET",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -30,7 +30,7 @@ export default function Header() {
   }, []);
 
   function logout() {
-    fetch("https://deploy-umyx.onrender.com/logout", {
+    fetch("http://localhost:4000/logout", {
       credentials: "include",
       method: "POST",
     });
