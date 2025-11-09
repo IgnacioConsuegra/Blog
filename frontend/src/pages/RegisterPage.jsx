@@ -23,14 +23,16 @@ export default function RegisterPage() {
         placeholder="username"
         value={username}
         onChange={ev => setUsername(ev.target.value)}
+        className="input"
       />
       <input
         type="password"
         placeholder="password"
         value={password}
+        className="input"
         onChange={ev => setPassword(ev.target.value)}
       />
-      <button>Register</button>
+      <button className="btn">Register</button>
     </form>
   );
 }

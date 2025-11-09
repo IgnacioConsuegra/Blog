@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Editor from "../Editor";
-import handlePhoto from "../Utils/handlePhoto.js"
+import handlePhoto from "../Utils/handlePhoto.js";
 
 export function EditPost() {
   const { id } = useParams();
@@ -30,7 +30,7 @@ export function EditPost() {
       setRedirect(true);
     }
   }
-  
+
   useEffect(() => {
     fetch("https://deploy-umyx.onrender.com/post/" + id).then(response => {
       response.json().then(postInfo => {
@@ -51,16 +51,18 @@ export function EditPost() {
         placeholder="Title"
         value={title}
         onChange={ev => setTitle(ev.target.value)}
+        className="input"
       />
       <input
         type="summary"
         placeholder="Summary"
         value={summary}
         onChange={ev => setSummary(ev.target.value)}
+        className="input"
       />
-      <input type="file" onChange={ev => handlePhoto(ev, setFile)} />
+      <input type="file" onChange={ev => handlePhoto(ev, setFile)} className="input hover:cursor-pointer" />
       <Editor onChange={setContent} value={content} />
-      <button style={{ marginTop: "5px" }}>Update Post</button>
+      <button className="btn">Update post</button>
     </form>
   );
 }

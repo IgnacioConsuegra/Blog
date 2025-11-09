@@ -33,15 +33,17 @@ export default function LoginPage() {
         type="text"
         placeholder="username"
         value={username}
+        className="input"
         onChange={ev => setUsername(ev.target.value)}
       />
       <input
         type="password"
         placeholder="password"
         value={password}
+        className="input"
         onChange={ev => setPassword(ev.target.value)}
       />
-      <button>Login</button>
+      <button className="btn">Login</button>
     </form>
   );
 }

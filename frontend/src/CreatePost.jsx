@@ -2,7 +2,7 @@ import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { Navigate } from "react-router-dom";
 import Editor from "./Editor.jsx";
-import handlePhoto from "./Utils/handlePhoto.js"
+import handlePhoto from "./Utils/handlePhoto.js";
 export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
@@ -26,7 +26,6 @@ export default function CreatePost() {
     }
   }
 
-  
   if (redirect) {
     return <Navigate to={"/"} />;
   }
@@ -37,16 +36,24 @@ export default function CreatePost() {
         placeholder="Title"
         value={title}
         onChange={ev => setTitle(ev.target.value)}
+        className="input"
       />
       <input
         type="summary"
         placeholder="Summary"
         value={summary}
         onChange={ev => setSummary(ev.target.value)}
+        className="input"
       />
-      <input type="file" onChange={ev => handlePhoto(ev, setFile)} />
+      <input
+        type="file"
+        onChange={ev => handlePhoto(ev, setFile)}
+        className="input"
+      />
       <Editor value={content} onChange={setContent} />
-      <button style={{ marginTop: "5px" }}>Create Post</button>
+      <button style={{ marginTop: "5px" }} className="btn">
+        Create Post
+      </button>
     </form>
   );
 }
