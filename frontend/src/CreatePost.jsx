@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import Editor from "./Editor.jsx";
 import handlePhoto from "./Utils/handlePhoto.js";
 import {toast} from "react-hot-toast"
+import { BASE_URL } from "./Utils/base_Url.js";
 export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
@@ -22,7 +23,7 @@ export default function CreatePost() {
     data.set("summary", summary);
     data.set("content", content);
     data.set("file", files);
-    const response = await fetch("http://localhost:4000/post", {
+    const response = await fetch(`${BASE_URL}/post`, {
       method: "POST",
       body: data,
       credentials: "include",

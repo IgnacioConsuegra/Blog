@@ -4,6 +4,7 @@ import { DeletePostModel } from "../components/DeletePostModel.jsx";
 import Editor from "../Editor";
 import handlePhoto from "../Utils/handlePhoto.js";
 import toast from "react-hot-toast";
+import { BASE_URL } from "../Utils/base_Url.js";
 export function EditPost() {
   const { id } = useParams();
   const [title, setTitle] = useState("");
@@ -23,7 +24,7 @@ export function EditPost() {
     if (files.length) {
       data.set("file", files);
     }
-    const response = await fetch("http://localhost:4000/post", {
+    const response = await fetch(`${BASE_URL}/post`, {
       method: "PUT",
       body: data,
       credentials: "include",
@@ -35,7 +36,7 @@ export function EditPost() {
     }
   }
   const handleDelete = async () => {
-    const response = await fetch("http://localhost:4000/deletePost/" + id, {
+    const response = await fetch(`${BASE_URL}/deletePost/` + id, {
       method: "POST",
       credentials: "include",
     });
@@ -47,7 +48,7 @@ export function EditPost() {
     }
   };
   useEffect(() => {
-    fetch("http://localhost:4000/post/" + id).then(response => {
+    fetch(`${BASE_URL}/post/` + id).then(response => {
       response.json().then(postInfo => {
         setTitle(postInfo.title);
         setSummary(postInfo.summary);

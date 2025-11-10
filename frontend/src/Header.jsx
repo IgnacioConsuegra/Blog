@@ -2,11 +2,12 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
-import {toast} from "react-hot-toast"
+import {toast} from "react-hot-toast";
+import { BASE_URL } from "./Utils/base_Url.js";
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   useEffect(() => {
-    fetch("http://localhost:4000/profile", {
+    fetch(`${BASE_URL}/profile`, {
       method: "GET",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -31,7 +32,7 @@ export default function Header() {
   }, []);
 
   function logout() {
-    fetch("http://localhost:4000/logout", {
+    fetch(`${BASE_URL}/logout`, {
       credentials: "include",
       method: "POST",
     });
