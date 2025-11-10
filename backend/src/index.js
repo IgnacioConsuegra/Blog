@@ -153,16 +153,13 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
-  console.log(req);
   const { token } = req.cookies;
   try {
     jwt.verify(token, secret, {}, (err, info) => {
       // if (err) throw err;
       res.json(info);
     });
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 });
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json("ok");
@@ -175,9 +172,7 @@ try {
   app.get(/.*/, (req, res) => {
     res.sendFile(path.join(buildPath, "index.html"));
   });
-} catch (err) {
-  console.log("Error: ", err);
-}
+} catch (err) {}
 app.listen(process.env.PORT || 4000, () =>
   console.log(`🚀 Server running on port ${process.env.PORT || 4000}`)
 );
