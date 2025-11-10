@@ -14,12 +14,8 @@ import { fileURLToPath } from "url";
 const app = express();
 app.use(
   cors({
+    origin: "http://localhost:5173",
     credentials: true,
-    origin: (origin, callback) => {
-      callback(null, true);
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
