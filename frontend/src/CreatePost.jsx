@@ -29,6 +29,8 @@ export default function CreatePost() {
     });
     if (response.ok) {
       setRedirect(true);
+      toast.success("Post created successfully");
+
     }
   }
 
