@@ -14,18 +14,19 @@ import { fileURLToPath } from "url";
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://www.ignacioconsuegra.com"],
     credentials: true,
   })
 );
 
 app.use(express.json());
 app.use(cookieParser());
+dotenv.config();
 const PORT = process.env.PORT;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config();
 
+app.use("/uploads", cors());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 const uploadMiddleware = multer({ dest: "uploads/" });
 
